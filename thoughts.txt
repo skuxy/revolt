@@ -38,7 +38,7 @@ FILES HIERARCHY:
 	category.lsp
 	article.lsp
 
-
+#######################################################################################################################################
 
 Frontend se sastoji od 4 glavne stranice (modula):
 1. Naslovnica
@@ -65,7 +65,8 @@ Frontend se sastoji od 4 glavne stranice (modula):
 4. O STRANICI
 	Custom.	
     
-    
+
+#######################################################################################################################################    
     
 -- SPREMANJE PASSWORDA --
 	Password se provuce kroz MD5, zatim se uzme vrijeme i takoder se provuce kroz MD5.
