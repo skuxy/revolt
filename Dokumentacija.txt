@@ -1,0 +1,212 @@
+
+						DOKUMENTACIJA ZA PROJEKT 'mcms'
+--------------------------------------------------------------------------------
+
+	0. SADRZAJ
+
+		1. Sto je 'mcms'
+
+		2. Koncept aplikacije
+			2.1. Koncept sadrzaja
+				2.1.1. Article page
+				2.1.2. Category page
+				2.1.3. Custom page
+
+		3. Shema sustava
+			3.1. Fizicka shema datoteka i direktorija
+			3.2. Formati odredenih zapisa
+				3.2.1. Format vremenske zone
+				3.2.2. Format 'slug' elementa
+				3.2.3. Format zapisa lozinke
+				3.2.4. Format zapisa vremena
+
+		4. Baza podataka
+
+		5. Kategorizacija funkcija
+
+		6. Funkcije
+
+--------------------------------------------------------------------------------
+
+	1. STO JE 'mcms'
+
+--------------------------------------------------------------------------------
+
+	2. KONCEPT APLIKACIJE
+
+		Buduci da aplikacija sluzi za manipulaciju i prikazivanje sadrzaja, ima
+		jasno definiran oblik svih sadrzajnih cjelina.
+
+		Cijela web aplikacija sastoji se od dva sucelja, administratorskog i
+		posjetiteljskog sucelja.
+
+		ADMINISTRATORSKO SUCELJE
+			Sluzi za administraciju sadrzajnih cjelina.
+
+		POSJETITELJSKO SUCELJE
+			Sluzi za prikazivanje sadrzaja posjetiteljima web aplikacije.
+
+		Dva navedena sucelja detaljnije su opisana u nastavku dokumentacije(?).
+
+
+		2.1. KONCEPT SADRZAJA
+
+			Glavna organizacijska sadrzajna cjelina je stranica (PAGE). Osim
+			stranice postoji i kostur (SKELETON).
+
+			Kostur je sadrzajna cjelina aplikacije koja se nikada ne mijenja.
+			Npr. kosutr moze sadrzavati header, navigaciju i footer, te PAGE
+			koji se nalazi unutar samog kostura.
+
+			Postoje tri vrste stranice:
+				1. Article page
+				2. Category page
+				3. Custom page
+
+			2.1.1. Article page
+				Glavni i najjednostavniji oblik stranice koji prikazuje
+				jedan clanak.
+
+			2.1.2. Category page
+				Oblik stranice koji prikazuje jednu ili vise kategorija na
+				nekoliko nacina.
+
+				Mogucnosti stranice 'Category page':
+					1. Prikazi opis kategorije - 0 | 1
+					2. Prikazi sve kategorije unutar kategorije - 0 | 1
+					3. Prikazi clanke unutar kategorije - 0 | 1
+					4. Prikazi izvode clanaka - 0 | 1
+
+			2.1.3. Custom page
+				Poseban oblik stranice koji je odredne predloskom. Aplikacija
+				ucitava predlozak i na temelju njega prikazuje sadrzaj.
+
+--------------------------------------------------------------------------------
+
+	3. SHEMA SUSTAVA
+
+		Shema se dijeli na 4 cjeline:
+			1. Baza podataka
+			2. Pozadinski sustav
+			3. Sucelje sustava
+			4. Datotecni dio
+				4.1. Datoteke repozitorija
+				4.2. Datoteke medija
+
+		3.1. Fizicka shema datoteka i direktorija
+
+			Sve datoteke i direktoriji poslozeni su u unaprijed odredenu
+			strukturu.
+
+			base/
+				lispfajl-1.lsp
+				...
+				lispfajl-N.lsp
+
+			data/
+				media/
+					mediafajl-1.m
+					...
+					mediafajl-M.m
+				repository/
+					repofajl-1.r
+					...
+					repofajl-K.r
+				database.db
+
+			3.2. Formati odredenih zapisa
+
+				U nastavku su definirani formati na temelju kojih se sprema
+				i prikazuje sadrzaj u programskom dijelu.
+
+
+				3.2.1. Format vremenske zone
+					Vremenska zona zapisana je u UTC formatu. Npr. 'UTC-8'
+
+				3.2.2. Format 'slug' elementa
+					Dopusteni znakovi su mala slova engleske abecede, brojevi
+					i znak '-'.
+					Iz naziva kategorije ili clanka se direktno izvodi 'slug'
+					naziv i zatim se na kraj dodaje '-X' gdje X predstavlja
+					prvi slobodni cijeli broj u bazi podataka.
+
+				3.2.3. Format zapisa lozinke
+					Lozinka je u bazi podataka zapisana na sljedeci nacin:
+						'X:salt'
+
+					X = md5(raw_password + salt)
+					salt = md5(vrijeme_zapisa_nove_lozinke)
+
+				3.2.4. Format zapisa vremena
+					Format: hh:mm:ss-DD.MM.YYYY
+					hh - sat u danu (0 - 24)
+					mm - minuta u satu (0-61)
+					ss - sekunda u minuti (0-60)
+					DD - dan u mjesecu
+					MM - mjesec u godini
+					YYYY - godina
+
+
+--------------------------------------------------------------------------------
+
+	4. BAZA PODATAKA
+
+		Baza podataka sastoji se od 8 tablica:
+			- GENERAL *
+			- SECRET *
+			- OPTIONS
+			- MEDIA
+			- CATEGORIES
+			- POSTS
+			- TAGS
+			- REPOSITORY
+
+		Tablice se dijele na dvije vrste. One koje imaju samo jedan red (*)
+		i one koje imaju neogranicen broj redova.
+
+	
+	4.1. Tablica 'GENERAL'
+
+		Sastoji se od sljedecih stupaca:
+			1. title
+			2. subtitle
+			3. keywords
+			4. time_zone
+			5. admin_name
+			6. admin_email
+			7. repository
+			8. media
+
+		1. title
+			Format: TEXT
+			Naslov stranice.
+
+		2. subtitle
+			Format: TEXT
+			Podnaslov stranice.
+
+		3. keywords
+			Format: TEXT
+			Kljucne rijeci odvojene zarezima koje se zapisuju u HTML za
+			kvalitetnije zapisivanje stranice u web trazilice.
+
+		4. time_zone
+			Format: TEXT
+			Vremenska zona stranice u UTF formatu prema kojoj se prikazuju
+			sva generirana vremena na stranici.
+
+		5. admin_name
+			TBD
+
+		6. admin_email
+			TBD
+
+		7. repository
+			Format: TEXT
+			Fizicka lokacija mape unutar koje se spremaju sve datoteke
+			dodane u repozitorij.
+
+		8. media
+			Format: TEXT
+			Fizicka lokacija mape unutar koje se spremaju sve datoteke
+			dodane u Media sucelje (npr. slike).

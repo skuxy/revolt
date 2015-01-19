@@ -1,0 +1,105 @@
+Folder hierarchy:
+
+mcms/
+	css/
+	img/
+	js/
+
+	base/
+		lispfajl-1.lsp
+		...
+		lispfajl-N.lsp
+
+	data/
+		media/
+			mediafajl-1.m
+			...
+			mediafajl-M.m
+		repository/
+			repofajl-1.r
+			...
+			repofajl-K.r
+		database.db
+
+	init.lsp
+	header.lsp
+	footer.lsp
+
+	index.cgi	
+	tekst.cgi
+	repo.cgi
+	o.cgi
+	
+
+FILES HIERARCHY:
+
+	init.lsp
+	auxiliary.lsp
+	category.lsp
+	article.lsp
+
+
+
+Frontend se sastoji od 4 glavne stranice (modula):
+1. Naslovnica
+2. Tekstovi
+3. Repozitorij
+4. O stranici
+
+
+1. NASLOVNICA
+	Prikazuje zadnjih nekoliko tekstova, tj. njihove izvode (excerpt).
+
+
+2. TEKSTOVI
+	Prikazuje sve kategorije jednog roditelja i koliko ima clanaka unutar pojedine kategorije.
+	Ako je u pitanju najniza kategorije, prikazuju se izvodi nekoliko zadnjih clanaka sa mogucnoscu stranica (da covjek vidi sve clanke, jel).
+	Ako je u pitanju konkretan tekst, prikazuje se njegov sadrzaj.
+
+
+3. REPOZITORIJ
+	Prikazuje zadnje postavljenje fajlove, opise itd.
+	Klikom na oznaku (tag) filtrira popis fajlova.
+
+
+4. O STRANICI
+	Custom.	
+    
+    
+    
+-- SPREMANJE PASSWORDA --
+	Password se provuce kroz MD5, zatim se uzme vrijeme i takoder se provuce kroz MD5.
+
+	Spremljeno: md5n(password + md5n(time)):md5n(time)
+	Prijava: if md5(entered_password + md5n(time)) == md5n(password + md5n(time))
+
+
+-- SLUG FORMAT --
+	Lowercase english alphabet: a-z0-9
+	Bez sranja, jedini dozvoljeni znak je '_' (underscore) umjesto razmaka.
+	Mice se s pocetka ili kraja recenice
+
+
+-- FEATURED OPCIJA KOD POSTOVA --
+	0 - nije
+	1 - je
+	(ko'b reko)
+
+
+-- PARENT KATEGORIJE --
+	0 oznacava da kategorija nema PARENTA!
+	STO CE RECI DA KATEGORIJI RODITELJ NE MOZE BITI UNCATEGORIZED NITI JEDNA DRUGA KATEGORIJA MOZE IMAT TAJ ID,
+	NITI SE TA KATEGORIJA MOZE IZBRISAT	
+
+
+-- OPTIONS --
+	Treba znat koji ID opcije sta radi!
+	ID je sljedeci --> XXYY gdje XX predstavlja redni broj grupe, a YY redni broj opcije
+
+
+-- VRIJEME FORMAT --
+	hh:mm:ss-DD.MM.YYYY
+	(mislim da je i kod passworda isti format)
+
+-- PROMIJENITI POST BRIJE U ARTICLE --
+	Svaki post ima jednu kategoriju parent i automatski je child od svih roditelja te kategorije
